@@ -1,0 +1,556 @@
+Date de Rendu:		03/10/2002 à 08:00 
+Groupe de News:         epita.cours.c-unix.mini-projs 
+Répertoire de Rendu:    ~/c/rendu/piscine/j7 
+Droits:                 701 pour ~
+			705 pour les autres répertoires 
+                        604 pour les fichiers de ~/c/rendu/piscine/j7
+Ne pas oublier:         Lire le sujet jusqu'au bout.
+			Etre en forme.
+			Faire un bisou à sa maman.
+			Se laver les dents avant d'aller se coucher.
+
+-------------------------------- 
+ IMPORTANT : MODALITES DE RENDU 
+-------------------------------- 
+
+Après le ramassage de tous les fichiers .c , .h et le fichier Makefile
+qui se  trouvent dans  le repertoire de  rendu, notre  moulinette doit
+pouvoir :
+
+- Exécuter gmake
+
+- Trouver  une bibliothèque  nommée  libdlist_`uname -m`-`uname  -s`.a
+  ainsi  qu'un  fichier  nommé  dlist.h  contenant  le  prototype  des
+  fonctions que  vous aurez implémentées. La bibliothèque  ne doit pas
+  utiliser de fonctions externes.
+
+N'oubliez pas  que votre code doit compiler  sans avertissements quand
+on  utilise 'gcc -Wall'.   Cela étant  dit, voici  certaines remarques
+utiles concernant ce point :
+
+- Pendant vos  tests, vous pourrez  constater que le type  de pointeur
+  sur fonction  utilisé dans les prototypes  demandés est incompatible
+  avec  celui que vous  allez vouloir  tester.  Concrètement,  si vous
+  testez vos listes avec des  chaînes de caractères et que vous passez
+  my_strcmp  en  tant  que  comparateur,  vous aurez  un  problème  de
+  conversion  de  pointeur,  sous   la  forme  d'un  avertissement  du
+  compilateur.
+
+- En conséquence  à la remarque  précédente, nous vous  invitons, pour
+  vos tests, à écrire des comparateurs de type correct, tel que :
+
+int		my_str_comparator(const void *p1, const void *p2)
+{
+    const char	*str1;
+    const char	*str2;
+
+    str1 = p1;
+    str2 = p2;
+    return my_strcmp(str1, str2);
+}
+
+Remarque
+--------
+
+- Si vous  ne faites pas  tout, vous n'aurez  pas tous les  points, mais
+vous en aurez quand même.
+
+- Le  pointeur de  liste passé  aux fonctions  n'est pas  forcément le
+pointeur sur la tête. (Il faut revenir au début de la liste.)
+
+
+----------------------
+ FONCTIONS AUTORISEES 
+----------------------
+
+malloc(3), free(3) et exit(3)
+
+---------------------
+ DOUBLY-LINKED LISTS
+---------------------
+
+Name
+----
+
+Doubly-Linked  Lists  -- linked  lists  containing  integer values  or
+pointers to  data, with the ability  to iterate over the  list in both
+directions.
+
+Synopsis
+--------
+
+struct		 s_dlist
+{
+  void		 *data;
+  struct s_dlist *next;
+  struct s_dlist *prev;
+};
+
+typedef struct s_dlist t_dlist;
+
+t_dlist		*my_dlist_append(t_dlist *list, void *data);
+t_dlist		*my_dlist_prepend(t_dlist *list, void *data);
+t_dlist		*my_dlist_insert(t_dlist *list, void *data, int position);
+t_dlist		*my_dlist_insert_sorted(t_dlist *list, void *data,
+                                      int (*func)(const void *, const void *));
+t_dlist		*my_dlist_remove(t_dlist *list, void *data);
+t_dlist		*my_dlist_remove_link(t_dlist *list, t_dlist *llink);
+void		my_dlist_free(t_dlist *list);
+t_dlist		*my_dlist_alloc(void);
+void		my_dlist_free_1(t_dlist *list);
+unsigned int	my_dlist_length(t_dlist *list);
+t_dlist		*my_dlist_copy(t_dlist *list);
+t_dlist		*my_dlist_reverse(t_dlist *list);
+t_dlist		*my_dlist_sort(t_dlist *list,
+			       int (*func)(const void *, const void *));
+t_dlist		*my_dlist_concat(t_dlist *list1, t_dlist *list2);
+void		my_dlist_foreach(t_dlist *list,
+			       void (*func)(void *, void *),
+			       void *user_data);
+t_dlist		*my_dlist_first(t_dlist *list);
+t_dlist		*my_dlist_last(t_dlist *list);
+t_dlist		*my_dlist_previous(t_dlist *list);
+t_dlist		*my_dlist_next(t_dlist *list);
+t_dlist		*my_dlist_nth(t_dlist *list, unsigned int n);
+void		*my_dlist_nth_data(t_dlist *list, unsigned int n);
+t_dlist		*my_dlist_find(t_dlist *list, void * data);
+t_dlist		*my_dlist_find_custom(t_dlist *list, void *data,
+				    int (*func)(const void *, const void *));
+int		my_dlist_position(t_dlist *list, t_dlist *llink);
+int		my_dlist_index(t_dlist *list, void *data);
+
+Description
+-----------
+
+The s_dlist structure and  its associated functions provide a standard
+doubly-linked list data structure.
+
+Each  element in  the list  contains a  piece of  data,  together with
+pointers  which  link  to  the  previous  and  next  elements  in  the
+list. Using these pointers it is  possible to move through the list in
+both  directions (unlike  the  Singly-Linked Lists  which only  allows
+movement through the list in the forward direction).
+
+The data contained in each element is a pointer to any type of data.
+
+Note that most of the  doubly-linked list functions must not expect to
+be passed  a pointer to the  first element in the  list. The functions
+which insert elements return the new start of the list, which may have
+changed.
+
+There  is  no  function  to  create  a  doubly-linked  list.  NULL  is
+considered to be the empty list so you simply set a t_dlist * to NULL.
+
+To add elements, use my_dlist_append(), my_dlist_prepend(),
+my_dlist_insert() and my_dlist_insert_sorted().
+
+To remove elements, use my_dlist_remove().
+
+To find elements in the list use my_dlist_first(), my_dlist_last(),
+my_dlist_next(), my_dlist_previous(), my_dlist_nth(), my_dlist_nth_data(),
+my_dlist_find() and my_dlist_find_custom().
+
+To find the index of an element use my_dlist_position() and
+my_dlist_index().
+
+To call a function for each element in the list use my_dlist_foreach().
+
+To free the entire list, use my_dlist_free().
+
+Details
+-------
+
+struct		s_dlist
+{
+  void		 *data;
+  struct s_dlist *next;
+  struct s_dlist *prev;
+};
+
+The  s_dlist  struct is  used  for  each  element in  a  doubly-linked
+list. The data  field holds the element's data, which  is be a pointer
+to any kind of  data. The next and prev pointers are  the links to the
+next and previous elements in the list.
+
+------------------------------------------------------------------------
+
+	my_dlist_append()
+
+t_dlist		*my_dlist_append(t_dlist *list, void *data);
+
+Adds a new element on to the end of the list.
+
+Note: The  return value is the new  start of the list,  which may have
+changed, so make sure you store the new value.
+
+  /* Notice that these are initialized to the empty list. */
+  t_dlist *list = NULL, *number_list = NULL;
+
+  /* This is a list of strings. */
+  list = my_dlist_append (list, "first");
+  list = my_dlist_append (list, "second");
+
+list : a pointer to a doubly-linked list.
+data : the data for the new element.
+
+Returns : the new start of the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_prepend()
+
+t_dlist		*my_dlist_prepend(t_dlist *list, void *data);
+
+Adds a new element on to the start of the list.
+
+Note: The  return value is the new  start of the list,  which may have
+changed, so make sure you store the new value.
+
+  /* Notice that it is initialized to the empty list. */
+  t_dlist *list = NULL;
+  list = my_dlist_prepend (list, "last");
+  list = my_dlist_prepend (list, "first");
+
+list : a pointer to a doubly-linked list.
+data : the data for the new element.
+
+Returns : the new start of the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_insert()
+
+t_dlist		*my_dlist_insert(t_dlist *list, void *data, int position);
+
+Inserts a new element into the list at the given position.
+
+list : a pointer to a doubly-linked list.
+data : the data for the new element.
+position : the position to insert the element. If this is negative, or
+is larger than the number of  elements in the list, the new element is
+added on to the end of the list.
+
+Returns : the new start of the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_insert_sorted()
+
+t_dlist		*my_dlist_insert_sorted(t_dlist *list, void *data,
+                                      int (*func)(const void *, const void *));
+
+Inserts  a new  element  into  the list,  using  the given  comparison
+function to determine its position.
+
+list : a pointer to a doubly-linked list.
+data : the data for the new element.
+func : the function to compare  elements in the list. It should return
+a number >  0 if the first parameter comes  after the second parameter
+in the sort order.
+
+Returns : the new start of the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_remove()
+
+t_dlist		*my_dlist_remove(t_dlist *list, void *data);
+
+Removes an element from a  doubly-linked list. If two elements contain
+the same  data, only  the first  is removed. If  none of  the elements
+contain the data, the doubly-linked list is unchanged.
+
+list : a doubly-linked list.
+data : the data of the element to remove.
+
+Returns : the new start of the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_remove_link()
+
+t_dlist		*my_dlist_remove_link(t_dlist *list, t_dlist *llink);
+
+Removes  an element  from a  doubly-linked list,  without  freeing the
+element. The removed element's prev and next links are set to NULL, so
+that it becomes a self-contained list with one element.
+
+list : a doubly-linked list.
+llink : an element in the doubly-linked list.
+
+Returns  :  the new  start  of  the  doubly-linked list,  without  the
+element.
+
+----------------------------------------------------------------------
+
+	my_dlist_free()
+
+void		my_dlist_free(t_dlist *list);
+
+Frees  all of  the  memory used  by  a doubly-linked  list.
+
+Note:  The user of this function should manually free all the elements
+(the "data" fields)  that  have  been  dynamically-allocated,  because
+my_dlist_free() does not do it.
+
+list : a doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_alloc()
+
+t_dlist		*my_dlist_alloc(void);
+
+Allocates space  for one doubly-linked  list element. It is  called by
+my_dlist_append(),     my_dlist_prepend(),    my_dlist_insert()    and
+my_dlist_insert_sorted() and so is rarely used on its own.
+
+Returns : a pointer to the newly-allocated doubly-linked list element.
+
+----------------------------------------------------------------------
+
+	my_dlist_free_1()
+
+void		my_dlist_free_1(t_dlist *list);
+
+Frees  one  doubly-linked  list  element.  It is  usually  used  after
+my_dlist_remove_link().
+
+list : a doubly-linked list element.
+
+----------------------------------------------------------------------
+
+	my_dlist_length ()
+
+unsigned int	my_dlist_length(t_dlist *list);
+
+Gets the number of elements in a doubly-linked list.
+
+list : a doubly-linked list.
+
+Returns : the number of elements in the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_copy()
+
+t_dlist		*my_dlist_copy(t_dlist *list);
+
+Copies a doubly-linked list.
+
+Note that  this is a "shallow"  copy. If the list  elements consist of
+pointers to data, the pointers are copied but the actual data isn't.
+
+list : a doubly-linked list.
+
+Returns : a copy of list.
+
+----------------------------------------------------------------------
+
+	my_dlist_reverse()
+
+t_dlist		*my_dlist_reverse(t_dlist *list);
+
+Reverses a  doubly-linked list. It  simply switches the next  and prev
+pointers of each element.
+
+list : a doubly-linked list.
+
+Returns : the start of the reversed doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_sort()
+
+t_dlist		*my_dlist_sort(t_dlist *list,
+			       int (*func)(const void *, const void *));
+
+Sorts a doubly-linked list using the given comparison function.
+
+list : a doubly-linked list.
+
+compare_func : the comparison  function used to sort the doubly-linked
+list. This function is passed 2 elements of the doubly-linked list and
+should  return 0  if they  are equal,  a negative  value if  the first
+element  comes before the  second, or  a positive  value if  the first
+element comes after the second.
+
+Returns : the start of the sorted doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_concat()
+
+t_dlist		*my_dlist_concat(t_dlist *list1, t_dlist *list2);
+
+Adds  the  second  doubly-linked  list  onto  the  end  of  the  first
+doubly-linked list. Note that the elements of the second doubly-linked
+list are not copied. They are used directly.
+
+list1 : a doubly-linked list.
+list2  :  the doubly-linked  list  to  add to  the  end  of the  first
+doubly-linked list.
+
+Returns : the start of the new doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_foreach()
+
+void		my_dlist_foreach(t_dlist *list,
+			       void (*func)(void *, void *),
+			       void *user_data);
+
+Calls a function for each element of a doubly-linked list.  This func-
+tion is called with 2 arguments,  the first is a pointer to the "data"
+field of elements and the second is the "user_data" pointer.
+
+list : a doubly-linked list.
+func : the function to call with each element's data.
+user_data : user data to pass to the function.
+
+----------------------------------------------------------------------
+
+	my_dlist_first()
+
+t_dlist		*my_dlist_first(t_dlist *list);
+
+Gets the first element in a doubly-linked list.
+
+list : a doubly-linked list.
+
+Returns :  the first element in  a doubly-linked list, or  NULL if the
+doubly-linked list has no elements.
+
+----------------------------------------------------------------------
+
+	my_dlist_last()
+
+t_dlist		*my_dlist_last(t_dlist *list);
+
+Gets the last element in a doubly-linked list.
+
+list : a doubly-linked list.
+
+Returns : the  last element in the doubly-linked list,  or NULL if the
+doubly-linked list has no elements.
+
+----------------------------------------------------------------------
+
+	my_dlist_previous()
+
+t_dlist		*my_dlist_previous(t_dlist *list);
+
+Gets the previous element in a doubly-linked list.
+
+list : an element in a doubly-linked list.
+
+Returns  : the  previous element,  or NULL  if there  are  no previous
+elements.
+
+----------------------------------------------------------------------
+
+	my_dlist_next()
+
+t_dlist		*my_dlist_next(t_dlist *list);
+
+Gets the next element in a doubly-linked list.
+
+list : an element in a doubly-linked list.
+
+Returns : the next element, or NULL if there are no more elements.
+
+----------------------------------------------------------------------
+
+	my_dlist_nth()
+
+t_dlist		*my_dlist_nth(t_dlist *list, unsigned int n);
+
+Gets the element at the given position in a doubly-linked list.
+
+list : a doubly-linked list.
+n : the position of the element, counting from 0.
+
+Returns : the element,  or NULL if the position is off  the end of the
+doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_nth_data()
+
+void		*my_dlist_nth_data(t_dlist *list, unsigned int n);
+
+Gets the data of the element at the given position.
+
+list : a doubly-linked list.
+n : the position of the element.
+
+Returns : the  element's data, or NULL if the position  is off the end
+of the doubly-linked list.
+
+----------------------------------------------------------------------
+
+	my_dlist_find()
+
+t_dlist		*my_dlist_find(t_dlist *list, void * data);
+
+Finds the  element in  a doubly-linked list  which contains  the given
+data.
+
+list : a doubly-linked list.
+data : the element data to find.
+
+Returns : the  found doubly-linked list element, or NULL  if it is not
+found.
+
+----------------------------------------------------------------------
+
+	my_dlist_find_custom()
+
+t_dlist		*my_dlist_find_custom(t_dlist *list, void *data,
+				    int (*func)(const void *, const void *));
+
+Finds an element in a doubly-linked list, using a supplied function to
+find the desired element. It iterates over the list, calling the given
+function which should return 0  when the desired element is found. The
+function  takes two  gconstpointer arguments,  the  doubly-linked list
+element's data and the given user data.
+
+list : a doubly-linked list.
+data : user data passed to the function.
+func : the function to call  for each element. It should return 0 when
+the desired element is found.
+
+Returns : the  found doubly-linked list element, or NULL  if it is not
+found.
+
+----------------------------------------------------------------------
+
+	my_dlist_position()
+
+int		my_dlist_position(t_dlist *list, t_dlist *llink);
+
+Gets  the position  of the  given  element in  the doubly-linked  list
+(starting from 0).
+
+list : a doubly-linked list.
+llink : an element in the doubly-linked list.
+
+Returns : the position of the element in the doubly-linked list, or -1
+if the element is not found.
+
+----------------------------------------------------------------------
+
+	my_dlist_index()
+
+int		my_dlist_index(t_dlist *list, void *data);
+
+Gets the position  of the element containing the  given data (starting
+from 0).
+
+list : a t_dlist.
+data : the data to find.
+
+Returns : the  index of the element containing the data,  or -1 if the
+data is not found.
+

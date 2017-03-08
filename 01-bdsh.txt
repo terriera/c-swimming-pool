@@ -1,0 +1,200 @@
+Exercice 1
+==========
+
+Créez les fichiers suivants à la racine de votre compte :
+
+      .plan
+
+      Ce fichier  doit contenir des renseignements  sur vous, tels que
+      votre nom,  votre adresse, votre n° de  téléphone, etc.  Il doit
+      être accessible  en  lecture par  tout le   monde,  mais pas  en
+      écriture.
+
+      Utilisez la commande `finger' pour tester.
+
+      Exemple :
+	      finger -m <votre login>
+
+
+
+      .signature
+      
+      Ce fichier doit contenir votre signature  « numérique » pour vos
+      news ou vos mails. Attention à respecter la Netiquette.
+
+      Utilisez le newsgroup `epita.test' pour tester votre signature.
+
+      
+
+Exercice 2
+==========
+
+Lisez attentivement le man de ssh-keygen. Créez ensuite vos clefs SSH,
+et disposez-les de telle façon à ce que :
+
+      * tout le monde puisse lire votre clef publique ;
+        (id_dsa.pub)
+
+      * personne (à part vous) ne puisse lire le contenu de votre
+        répertoire .ssh et des autres fichiers qui s'y trouvent
+        (à part id_dsa.pub bien sûr).
+
+
+Exercice 3
+==========
+
+Nom de l'exécutable:		bdsh.sh
+Nom du répertoire de rendu:	~/c/rendu/piscine/j1
+Droits:				705 pour les répertoires et les exécutables,
+				604 pour le reste.
+Date de rendu:			mardi 24 septembre à 8:00
+
+
+Sujet: écrire un  script shell (interprété  par /bin/sh) permettant la
+manipulation d'une base de données. Cette base de données sera stockée
+dans le champ « user_data » de votre connexion Netsoul.
+
+Ce  script gère l'ajout, la  consultation et la suppression de données
+dans la  base.
+
+Les données sont organisées  par lignes, chacune contenant un ensemble
+de champs.  Les champs sont séparés par le délimiteur de champ `:'. Un
+champ est une entrée de la forme `identifiant=valeur'.
+
+* Un nom de champ commence par une lettre (majuscule ou minuscule), et
+  continue avec une suite qui peut  contenir des lettres, des chiffres
+  et le caractère `_'. En clair : [a-zA-Z][a-zA-Z0-9_]*
+
+* Une  valeur peut  être  composée de  caractères alphanumériques, des
+  caractères `_' (underscore) et ` ' (espace).
+  En clair : [a-zA-Z0-9_ ]*
+
+* L'identifiant d'un champ est suivi du  caractere délimiteur `=' puis
+  de la valeur du champ.  Les couples champ-valeur sont séparés par le
+  caractère délimiteur `:'.
+
+SYNOPSYS:
+  ./bdsh.sh <commande> <argument>
+
+  où <commande>  correspond à `insert', `dump',  `select', `delete' ou
+  `drop'
+
+DÉTAIL DES COMMANDES:
+
+  insert
+
+    La commande `insert' prend en argument les entrées à rajouter à la
+    base.
+
+  dump
+
+    La commande `dump' affiche tout le contenu de la base de données.
+
+  select
+
+    La commande `select' affiche  uniquement les entrées correspondant
+    à l'argument donné. L'argument peut être une expression régulière.
+
+  delete
+
+    La commande  `delete'  enlève de  la base uniquement   les entrées
+    correspondant   à  l'argument  donné.  L'argument  peut  être  une
+    expression régulière.
+
+  drop
+ 
+    La commande `drop' efface tout le contenu de la base.
+
+GESTION DES ERREURS:
+
+    Votre programme doit renvoyer un << exit status >> non nul si il
+    detecte une erreur dans l'argument ou dans la base.
+
+EXEMPLES:
+
+  $ ./bdsh.sh insert "c1=val_1:c2=val_2"
+  $ ./bdsh.sh insert "c1=val_10:c2=val_20"
+  $ ./bdsh.sh select "c2=val_2"
+  c1=val_1:c2=val_2
+  $ ./bdsh.sh delete "c2=val_2"
+  $ ./bdsh.sh dump
+  c1=val_10:c2=val_20
+  $ ./bdsh.sh drop
+  $ ./bdsh.sh insert "c12=toto:autre_c12=val_1"
+  $ ./bdsh.sh insert "ct=t42:c13=Lundi"
+  $ ./bdsh.sh insert "ct=2:c13=Mardi"
+  $ ./bdsh.sh insert "ct=val_4:c13=Mercredi"
+  $ ./bdsh.sh insert "ct=val_42:c13=Jeudi"
+  $ ./bdsh.sh dump
+  c12=toto:autre_c12=val_1
+  ct=t42:c13=Lundi
+  ct=2:c13=Mardi
+  ct=val_4:c13=Mercredi
+  ct=val_42:c13=Jeudi
+  $ ./bdsh.sh select "c.*=val_."
+  ct=val_4:c13=Mercredi
+
+
+Contraintes
+-----------
+
+* Ce  programme doit fonctionner    sur  toutes les   architectures de
+  l'école (i386/NetBSD, alpha/OSF1, sun4u/SunOS).
+
+* Il doit être conforme au standard shell POSIX (/bin/sh standard)
+  Attention aux extensions bash ou autres.
+
+* Vous avez droit aux commandes suivantes :
+   - les builtins du shell POSIX (y compris test, [)
+   - cp, rm, mv, touch, cat, cut, head, tail, grep, sed, tr, awk
+
+* Ne modifiez pas le  contenu  de votre  répertoire de rendu  après la
+  date limite.
+
+Remarques
+---------
+
+* Pour   trouver   des   machines   correspondant    aux   différentes
+  architectures, vous pouvez exécuter les commandes suivantes :
+
+    ns_hwho | grep NetBsd_wse
+    ns_hwho | grep digital_unix
+    ns_hwho | grep SunOS-5.8_wse
+
+* Pour trouver  la valeur courante de votre  champ « user_data », vous
+  pouvez utiliser les commandes suivantes :
+
+    # Récupère le nom de machine :
+    HOST=`uname -n`
+ 
+    # Récupère l'identifiant de connexion :
+    MY_NETSOUL=${USER}@`ns_hwho | grep ^${HOST}' ' | \
+			          tr -s ' ' | cut -d ' ' -f 3`
+
+    # Récupère le contenu du champ :
+    ns_who -u | grep ^${MY_NETSOUL} | tr -s ' ' | cut -d ' ' -f 2
+
+* Pour changer la valeur courante de votre champ « user_data », utilisez
+  la commande suivante :
+
+    ns_user_data <valeur>
+
+  Attention, la <valeur> ne peut pas contenir d'espaces ou de retour à
+  la ligne. Vous devez remplacer ceux-ci par les séquences '+' et %0A,
+  respectivement.
+
+
+* En  règle générale, le champ «  user_data » de   Netsoul ne peut pas
+  contenir de caractères spéciaux.
+
+  Pour  « encoder » et  « désencoder »   ces caractères spéciaux, nous
+  vous fournissons  deux programmes, `urlencode' et  `urldecode', dans
+  le répertoire ~acu/mbin. Par exemple :
+
+  $ echo ":champ=valeur:" | ~acu/mbin/urlencode 
+  %3Achamp%3Dvaleur%3A%0A
+  $ echo "%3Achamp%3Dvaleur%3A%0A" |  ~acu/mbin/urldecode 
+  :champ=valeur:
+
+* N'oubliez pas que si vous devez creer des fichiers temporaires, vous
+  devez les creer dans le repertoire /tmp, prevu a cet effet.

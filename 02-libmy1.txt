@@ -1,0 +1,235 @@
+Date de Rendu: 		25/09/2002 à 08:00
+Groupe de News: 	epita.cours.c-unix.mini-projs
+Repertoire de Rendu: 	~/c/rendu/piscine/j2
+Droits: 		705 pour les répertoires.
+			604 pour le reste.
+Ne pas oublier: 	Aller au séminaire jeudi soir.
+			Aider ses camarades.
+
+Consignes:
+
+* Vous devez mettre dans le répertoire de rendu le fichier j2.h :
+
+	--8<--
+
+        #ifndef J2_H
+	# define J2_H
+	void    my_putchar(char c);
+	void    my_putstr(const char *str);
+	void    my_putnbr(int nbr);
+	int     my_atoi(const char *str);
+	void    my_putnbr_base(int nbr, const char *base);
+	int     my_atoi_base(const char *str, const char *base);
+	#endif /* !J2_H */
+
+	--8<--
+
+  et le fichier my_putchar.c :
+
+	--8<--
+
+	#include <unistd.h>
+	#include "j2.h"
+
+	void    my_putchar(char c)
+	{
+	  write(STDOUT_FILENO, &c, 1);
+	}
+
+	--8<--
+	
+  Ces fichiers sont disponibles dans ~acu/public, vous n'avez qu'à les
+  copier.
+
+  Note : vous n'avez pas à vous occuper des fichiers .h, ils n'ont pas
+  encore été vus en cours ; j2.h n'est donné qu'à titre informatif.
+
+* Vous devez rendre un seul fichier par exercice contenant la fonction
+  que vous devez coder. Tout le repertoire sera ramasse.
+
+* Votre code doit impérativement respecter la norme EPITA (cf. site
+  des acus).
+
+* Les fichiers doivent contenir un en-tête normalisé EPITA (cf. norme
+  pour les détails). Pour l'insérer automagiquement avec emacs, tapez
+  C-c C-h.  Attention, ceci ne fonctionne qu'avec la configuration
+  standard EPITA d'emacs.
+
+* Aucun des fichiers rendus ne doit contenir de fonction main().
+  (utilisez une fonction main() dans un fichier à part pour faire
+   vos tests, et ne laissez pas ce fichier dans votre repertoire
+   de rendu).
+
+* Les fonctions autorisées : vous avez le droit à la fonction
+  my_putchar() qui vous est donnée, et à ce que vous faites vous
+  même, c'est-à-dire aux fonctions présentes dans l'un de vos 6
+  fichiers.
+
+* Vous pouvez utiliser vos fonctions les unes dans les autres, sans
+  les copier d'un fichier à l'autre : ils seront tous compilés
+  ensemble.
+
+* Tous vos fichiers doivent compiler. Une erreur de compilation dans
+  l'un de vos fichiers entraînera une note de zéro pour tous vos
+  exercices.
+
+* Vos fonctions ne doivent se trouver qu'une seule fois dans vos
+  sources : ne pas les copier dans tous les `.c'.
+
+* Lisez le sujet jusqu'au bout, vous trouverez des exemples en fin de
+  sujet pour chaque exercice !!
+
+* le malloc est interdit !
+
+Exercice 1:
+___________
+
+fichier: my_putstr.c
+
+void    my_putstr(const char *str);
+
+Cette fonction affiche la chaîne de caractères `str' passée en argument.
+On considère que le pointeur nul n'est pas à gérer, la chaîne de caractères 
+est donc toujours valide.
+
+Attention, la fonction ne doit pas afficher de retour à la ligne.
+
+
+Exercice 2:
+___________
+
+fichier : my_putnbr.c
+
+void    my_putnbr(int nbr);
+
+Cette fonction affiche la valeur du nombre passé en argument.
+
+nbr peut évidemment prendre toutes les valeurs possibles du type int
+(avec signe). Par exemple, sur i386-netbsd, toutes les valeurs
+comprises entre -2147483648 et 2147483647.
+
+Votre fonction doit donc gérer le signe, et afficher un "-" devant les
+nombres négatifs.
+
+Attention, la fonction ne doit pas afficher de retour à la ligne.
+
+Remarque: pour utiliser la valeur -2147483648, on ne peut pas ecrire
+ce nombre tel quel, il faut utiliser une des methodes suivantes :
+
+   -2147483647-1
+
+ou :
+
+#include <limits.h>
+
+puis
+
+    INT_MIN
+
+(INT_MIN est une constante speciale qui vaut -2147483648)
+
+
+Exercice 3:
+___________
+
+fichier : my_atoi.c
+
+int     my_atoi(const char *str);
+
+Cette fonction retourne la valeur entière correspondant à la chaîne de
+caractères passée en argument.
+
+La chaîne passée en argument peut contenir un nombre négatif ou
+positif, qui tiendra dans un int. Par exemple : "-42" ou "42", mais
+pas "2147483648" (sur i386-netbsd)
+
+La chaîne est valide, mais peut être "0" (pas le pointeur nul ni une
+chaîne vide, la chaîne "0" !!).
+
+Elle ne peut pas contenir plusieurs caractères '0' au début de la
+chaîne ("042" ne sera pas testé, ni "00").
+
+
+Exercice 4:
+___________
+
+fichier : my_putnbr_base.c
+
+void    my_putnbr_base(int nbr, const char *base);
+
+Cette fonction affiche la valeur du nombre `nbr' passé en argument,
+dans la base `base' passée en argument.
+
+Toutes les remarques de l'exercice 2 sont valables pour cet exercice.
+
+La base passée en argument est considerée comme valide (et non vide).
+Le caractère `-' servant à indiquer le signe, il ne peut donc pas être
+présent dans la base.
+
+La base ne contient pas forcément des caractères consécutifs.
+
+  * "ac"est une base binaire
+  42 en base "ac" s'écrit "cacaca"
+
+  * "abcdefghij" est une base décimale
+  42 en base "abcdefghij" s'écrit "ec"
+
+  * Le 0 de la base binaire "ca" est 'c' le 1 'a'
+
+
+Exercice 5:
+___________
+
+fichier : my_atoi_base.c
+
+int     my_atoi_base(const char *str, const char *base);
+
+Cette fonction retourne la valeur entière correspondant à la chaîne de
+caractères `str' passée en argument, interprétée dans la base `base'
+passée en argument.
+
+Les remarques des exercices 3 et 4 à propos de `base' et de `str' sont
+aussi valables pour cet exercice.
+
+De plus, la base passée en argument est considerée comme valide ; il
+n'y a pas de caractère dans `str' qui ne soit pas dans `base'.
+
+
+Exemples :
+__________
+
+$ cat main.c
+#include "j2.h"
+
+int	main()
+{
+   char	*str;
+   int	i1;
+
+   i1 = 42;
+   str = "String:";
+   my_putstr(str);
+   my_putnbr(i1);
+   i1 = my_atoi("24");
+   my_putstr("\nSeminaire\n");
+   my_putnbr(i1);
+   my_putstr("\nAllez-y\n");
+   i1 = my_atoi_base("bababa", "ab");
+   my_putnbr(i1);
+   my_putstr(":Soit en base hexa:");
+   my_putnbr_base(i1, "0123456789abcdef");
+   my_putstr(":Soit en binaire:");
+   my_putnbr_base(i1, "01");
+   my_putstr("\nSeminaire Allez-y\n");
+   return 0;
+}
+$ cc -Wall my_putchar.c my_putstr.c my_putnbr.c my_atoi.c my_putnbr_base.c my_atoi_base.c main.c
+$ ./a.out
+String:42
+Seminaire
+24
+Allez-y
+42:Soit en base hexa:2a:Soit en binaire:101010
+Seminaire Allez-y
+$
+

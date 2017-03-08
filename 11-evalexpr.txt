@@ -1,0 +1,218 @@
+Date de Rendu:		06/10/2002 a 23:42
+Groupe de News:         epita.cours.c-unix.mini-projs
+Répertoire de Rendu:    ~/c/rendu/piscine/j11
+Droits:                 au moins 701 pour ~
+			705 pour les autres répertoires
+                        604 pour les fichiers de ~/c/rendu/piscine/j11
+Ne pas oublier: 	Travailler à la norme.
+			Lire le sujet jusqu'au bout.
+			Aider vos camarades en leur donnant des explications, 
+			mais sans travailler à leur place
+
+---------------------------------
+ IMPORTANT :: MODALITES DE RENDU
+---------------------------------
+
+- Aucune fonction ne doit se trouver en double dans vos fichiers.
+
+- Vous devez  déclarer le  prototype de toutes  vos fonctions  dans le
+  fichier j11.h.
+
+- Vos fichiers doivent compiler sans warning avec `gcc -Wall'
+
+- Votre rendu  devra se compiler  en executant uniquement  la commande
+  make, les regles obligatoires sont all, clean et distclean
+
+- La règle all doit  générer l'exécutable eval_expr dans le répertoire
+  courant.
+
+----------------------
+ FONCTIONS AUTORISEES
+----------------------
+
+Vous avez droit  à l'appel système write(2) et  à la fonction standard
+exit(3).
+
+C'est tout.
+
+Il n'y a pas besoin de malloc(3) pour travailler avec des structures
+dans eval_expr.
+
+-----------------------
+ PRESENTATION GENERALE
+-----------------------
+
+Il  s'agit   de  réaliser  une  machine  qui   évalue  une  expression
+arithmétique.
+
+Le sujet se  découpe en quatre « niveaux ». Le  but est d'atteindre le
+niveau le plus élevé.
+
+Niveau 1 : expressions arithmétiques « simples »
+************************************************
+  
+L'expression à évaluer est composées de nombres entiers séparés par
+des opérateurs arithmétiques.
+
+Exemple d'expression : 
+  987+654/321
+
+* Le  programme reçoit l'expression  à évaluer  en ligne  de commande,
+dans son premier argument.
+
+* L'évaluation  a lieu  de  gauche  à droite,  sans  tenir compte  des
+priorités.
+
+* Le  programme  affiche  sur   sa  sortie  standard  le  résultat  de
+l'évaluation, suivi d'un retour à la ligne.
+
+* Un nombre négatif est précédé par le signe `-'.
+
+Par exemple :
+
+$ ./eval_expr "987+654/321"
+5
+$ ./eval_expr "-1+1"
+0
+$
+
+Il existe 5 types d'opérateurs qui peuvent figurer dans une expression
+arithmétique :
+
+- l'operateur d'addition
+- l'operateur de soustraction
+- l'operateur de multiplication
+- l'operateur de division
+- l'operateur modulo (comme en C, pas comme en arithmétique)
+
+* Le programme  doit gérer les erreurs arithmétiques,  en renvoyant un
+code d'erreur non nul si une opération est invalide.
+
+Niveau 2 : expressions arithmétiques « simples » dans une base quelconque
+*************************************************************************
+
+L'exercice est le même que pour le niveau 1, à ces exceptions près :
+
+* les nombres peuvent être entrés sous la forme d'un couple de valeurs
+séparés par  le caractère deux-points (:). La  première valeur indique
+la base dans laquelle est exprimée le nombre, et la seconde valeur est
+la représentation du nombre dans cette base.
+
+* si le  nombre est négatif, le  signe `-' est indiqué  juste avant la
+base.
+
+* la base dans  laquelle doit être affichée le  résultat est donnée en
+deuxième argument.
+
+Par exemple :
+
+$ ./eval_expr "ac:cacaca+51/1:111" "0123456789abcdef"
+1f
+$
+
+Note: si la base d'entrée ou de sortie n'est pas spécifiée, on utilise
+la base par défaut "0123456789".
+
+RAPPEL: la  base « 1 »  existe ! Sa représentation  comporte autant de
+fois son chiffre que ce qu'indique le nombre.
+
+Par exemple, dans les conventions de l'exercice :
+01:100 == 01234:4 == x:xxxx
+
+Niveau 3 : expressions arithmétiques complètes
+**********************************************
+
+L'exercice est le même que pour le niveau 2, à ces exceptions près :
+
+* Les priorites des opérateurs suivent les règles de l'arithmétique du
+langage C/ANSI.
+
+* Les  expressions peuvent être  groupées par  les parenthèses  `(' et
+  ')'.
+
+* Les  erreurs arithmétiques  doivent être  signalées par  le  code de
+  retour 1.
+
+* Les erreurs de syntaxe doivent  être signalées par le code de retour
+  2.
+
+Niveau 4 : expressions arithmétiques avec fonctions
+***************************************************
+
+L'exercice est le même que pour le niveau 3, à cette exception près :
+
+* Le programme doit gérer l'appel des fonctions arithmétiques suivantes :
+    fact
+    fibo 
+    pow
+    pgcd
+    ppcm
+    
+Un  appel  de  fonction  est   indiqué  par  le  nom  de  la  fonction
+immédiatement  suivi de  la  parenthèse ouvrante  (pour le  distinguer
+d'une indication de base numérique), du ou des arguments donné(s) à la
+fonction, puis de la parenthèse fermante.
+
+S'il y a plusieurs arguments,  ils sont séparés par des virgules, sans
+espaces.
+
+Par exemple :
+
+$ ./eval_expr "fact(3)/(fact(2)*fact(3-2))" "01"
+11
+$ ./eval_expr "pow(n1234567:7,p1234:2)+pgcd(10:00111,xy:yxxyx)" "0123456789"
+55
+$
+
+* Les  erreurs  d'arité  (mauvais  nombre  d'arguments)  doivent  être
+signalées par le code de retour 3.
+
+Remarques
+*********
+
+* Les valeurs  manipulées ne provoqueront  pas de débordement  dans le
+type entier `int'.
+
+* Les  nombres peuvent  être  considérés valides.   Les caractères  de
+ponctuation utilisés dans le  sujet et les opérateurs arithmétiques ne
+figureront pas dans la base et dans les nombres.
+
+* Si la  base de sortie est  1, et que  le résultat à afficher  est le
+nombre 0, la sortie doit être une ligne vide.
+
+* Le  signe,  s'il est  spécifié,  l'est  sous  la forme  d'une  seule
+occurence  du  caractère  `-'.  `-+--+-+1' n'est  pas  une  expression
+valide.
+
+* Les  batteries   de  tests   de  chaque  niveau   seront  appliquées
+séparément.   La note  finale sera  celle correspondant  au  niveau de
+tests réussis le  plus haut.  Ceci permet notamment  à un eval_expr de
+niveau 3, qui ne  passe pas les tests de niveau 1,  d'être évalué à sa
+juste valeur.
+
+======================================================================
+FAQ
+
+Q: Doit-on gérer l'opérateur unaire - devant une parenthèse ouvrante
+   (niv. 3) ou devant un nom de fonction (niv. 4) ?
+
+R: Maintenant, oui.
+
+Q: Doit-on gérer les grands nombres ?
+
+R: Non.
+
+Q: Doit-on gérer le cas où il y a plusieurs fois le zéro de la base
+   en tête du nombre ?
+
+R: Maintenant, oui.
+
+Q: Comment exprimer 0 en base 1 ?
+
+R: Avec une base comportant un chiffre, le ":", puis rien derrière.
+   Par exemple: "x:", "0:", "1:" etc...
+   Ainsi, "x:-0", "-0:", "1:+-1:" sont 3 expressions qui s'évaluent chacune
+   à 0.
+
+
+

@@ -1,0 +1,83 @@
+Date de Rendu:            28/09/2002 DES QUE VOUS AVEZ F-I-N-I
+Repertoire de Rendu:      ~/c/rendu/piscine/sj2
+Droits:                   705 pour les répertoires, 
+                          604 pour le reste
+
+Consignes:		  Ne sont autorisees que les fonctions implementees par
+			  vos soins.
+
+			  Le but d'aujourd'hui est de privilegier le travail de 
+			  groupe, par consequent une note sera attribuee pour un
+			  groupe (la meme pour chaque membre). L'evaluation sera
+			  basee sur la comprehension et la capacite d'explication
+			  de chaque membre. Vous devez vous aider au sein du groupe.
+
+			  il ne s'agit pas d'une moyenne, on prendra
+			  en compte la plus mauvaise prestation. Si une personne ne
+			  sait pas expliquer, c'est 0 pour le groupe.
+
+			  Le groupe doit etre au complet pour la soutenance.
+
+
+Exercice 1:
+__________
+
+Fichier            : my_banner.c
+
+Executable         : my_banner
+
+Man autorise       : man banner
+                     man diff
+
+Fonction autorisee : void my_putchar(char c);
+
+  Faire un programme qui ecrive en lettres larges (MAJUSCULES) un message 
+  passe en parametres.
+  Le texte affiche ne devra pas depasser 80 colonnes.
+
+  Les tests seront faits avec la commande banner et diff du shell ainsi que
+  my_banner.
+
+  Le fichier my_banner.c doit evidemment contenir un main.
+  Vous n'avez le droit qu'a my_putchar.
+
+  Vous ne vous occuperez que des majuscules et des chiffres et l'espace (ie [A-Z0-9 ]).
+
+  Vous n'avez pas le droit a malloc NI aux tableaux a deux dimensions et plus.
+
+
+                 ^
+#        #####   |
+#    #  #     #  |
+#    #        #  | 8 caracteres
+#    #   #####   |
+####### #        |
+     #  #        |
+     #  #######  ^
+<------>         
+   8 caracteres
+
+  
+Exemple      :
+
+$my_banner "ACU 42"
+
+   #     #####  #     #         #        #####
+  # #   #     # #     #         #    #  #     #
+ #   #  #       #     #         #    #        #
+#     # #       #     #         #    #   #####
+####### #       #     #         ####### #
+#     # #     # #     #              #  #
+#     #  #####   #####               #  #######
+
+$my_banner "VIVE LES ACUS"
+
+#     #   ###   #     # #######         #       #######  #####             #
+#     #    #    #     # #               #       #       #     #           # #
+#     #    #    #     # #               #       #       #                #   #
+#     #    #    #     # #####           #       #####    #####          #     #
+ #   #     #     #   #  #               #       #             #         #######
+  # #      #      # #   #               #       #       #     #         #     #
+   #      ###      #    #######         ####### #######  #####          #     #
+
+

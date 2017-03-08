@@ -1,0 +1,172 @@
+Date de Rendu:		26/09/2002 a 08:00
+Groupe de News:         epita.cours.c-unix.mini-projs
+Répertoire de Rendu:    ~/c/rendu/piscine/j3
+Droits:                 711 pour ~
+			705 pour les autres répertoires
+                        604 pour les fichiers de ~/c/rendu/piscine/j3
+Ne pas oublier:         Aller à la présentation Epitanime à 19h00 en amphi 4.
+			Aller au séminaire demain soir.
+			Apporter ses affaires demain matin.
+			Travailler à la norme.
+			Lire le sujet jusqu'au bout.
+			Aider vos camarades en leur donnant des explications, 
+			mais sans travailler à leur place
+
+---------------------------------
+ IMPORTANT :: MODALITES DE RENDU
+---------------------------------
+
+- A chaque exercice correspond un fichier C.
+- De plus, vous pouvez si vous le souhaitez utiliser un fichier common.c
+  dans lequel vous mettrez des fonctions communes à plusieurs exercices.
+- Aucune fonction ne doit se trouver en double dans vos fichiers.
+- Vous devez déclarer le prototype de toutes vos fonctions dans le
+  fichier j3.h.
+- Vos fichiers doivent compiler sans warning avec `gcc -Wall' sauf
+  pour strchr() et strrchr() avec le message `warning: return discards
+  qualifiers from pointer target type'
+- Aucune fonction main() ne devra se trouver dans les fichiers
+  que vous rendez, y compris common.c.
+
+----------------------
+ FONCTIONS AUTORISEES
+----------------------
+
+Aucune. Vous avez le droit à toutes les structures de contrôle du C
+autorisées par la norme, c'est tout.
+Vous n'avez donc pas le droit ni à la libc, *ni aux appels système*.
+
+Vous êtes bien sur libres d'utiliser my_putchar() et même write() pour
+vos tests, mais pas dans les fonctions que vous rendez.
+
+------------------------------
+ GENERALITES - FAUX PROBLEMES
+------------------------------
+
+Les tests qui seront effectues n'entraîneront pas de débordement de
+capacité. Par exemple 15! est un nombre trop grand pour tenir dans un
+unsigned int donc my_factorial(15) ne sera pas testé.
+
+-------------------------------
+ RAPPEL DU COURS D'AUJOURD'HUI
+-------------------------------
+
+Vous n'avez pas le droit d'écrire dans les chaînes de caractères
+entre guillemets. C'est-à-dire que vous ne pouvez pas écrire :
+char *str = "pastis";
+str[0] = 'P';
+
+Vous devez, par exemple, écrire :
+char str[51];
+my_strncpy(str, "pastis", 51);
+str[0] = 'P';
+
+
+Exercice 1
+----------
+Fichier : my_factorial.c
+Prototype de la fonction : 
+  unsigned int my_factorial(unsigned int a);
+
+Définition :
+  retourne a!
+  0! = 1
+
+
+Exercice 2
+----------
+Fichier : my_square.c
+Prototype de la fonction :
+  unsigned int my_square(int a);
+
+Définition :
+  retourne a^2
+
+
+Exercice 3
+----------
+Fichier : my_power.c
+Prototype de la fonction : 
+  int my_power(int n, unsigned int p);
+
+Définition :
+  retourne n^p
+  n^0 = 1
+
+
+Exercice 4
+----------
+Fichier : my_is_prime.c
+Prototype de la fonction :
+  unsigned int my_is_prime(unsigned int a);
+
+Définition :
+  Un nombre premier est un nombre qui admet exactement 4 diviseurs 
+  entiers (positifs ou négatifs), 1, -1, lui-même et moins lui-même.
+  Le premier nombre premier est 2.
+  La fonction renvoie 1 si le nombre est premier, 0 sinon.
+
+
+Exercice 5
+----------
+Fichier : my_strlen.c
+Prototype de la fonction :
+  unsigned int    my_strlen(const char *str);
+
+Définition : 
+  Cette fonction doit se comporter exactement comme la fonction standard
+  strlen. Pour savoir ce que fait cette fonction, reportez-vous à la page
+  de manuel correspondante :
+  man -s 3 strlen
+
+Exercice 6
+----------
+Fichier : my_strncpy.c
+Prototype de la fonction :
+  char *my_strncpy(char *dest, const char *src, int n);
+
+Définition : 
+  Cette fonction doit se comporter exactement comme la fonction standard
+  strncpy. Pour savoir ce que fait cette fonction, reportez-vous à la page
+  de manuel correspondante :
+  man -s 3 strncpy
+
+
+Exercice 7
+----------
+Fichier : my_revstr.c
+Prototype de la fonction : 
+  void my_revstr(char *dest, const char *src);
+
+Définition : 
+  `my_revstr' recopie la chaine `src' dans la chaine `dest' en
+  l'inversant. Attention `dest' et `src' peuvent être identiques (ie. si
+  vous modifiez la chaine dest, la chaine src sera modifiee en meme temps.)
+  Les deux chaînes sont nul-terminées, et `dest' doit le devenir
+  si elle ne l'est pas déjà.
+
+Exercice 8
+----------
+Fichier : my_strstr.c
+Prototype de la fonction :
+  char *my_strstr(char *big, char *little);
+
+Définition : 
+  Cette fonction doit se comporter exactement comme la fonction standard
+  strstr. Pour savoir ce que fait cette fonction, reportez-vous à la page
+  de manuel correspondante :
+  man -s 3 strstr
+
+
+Exercice 9
+----------
+Fichier : my_strncmp.c
+Prototype de la fonction :
+  int my_strncmp(const char *s1, const char *s2, int n);
+
+Définition : 
+  Cette fonction doit se comporter exactement comme la fonction standard
+  strncmp. Pour savoir ce que fait cette fonction, reportez-vous à la page
+  de manuel correspondante :
+  man -s 3 strncmp
+

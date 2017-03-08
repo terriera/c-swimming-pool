@@ -1,0 +1,155 @@
+Date de Rendu:		01/10/2002 à 08:00
+Groupe de News:         epita.cours.c-unix.mini-projs
+Répertoire de Rendu:    ~/c/rendu/piscine/j5
+Droits:                 701 pour ~
+			705 pour les autres répertoires
+                        604 pour les fichiers de ~/c/rendu/piscine/j5
+Ne pas oublier:         Lire le sujet jusqu'au bout.
+			Aider vos camarades en leur donnant des explications, 
+			mais sans travailler à leur place
+
+---------------------------------
+ IMPORTANT :: MODALITES DE RENDU
+---------------------------------
+
+- Chaque exercice / fichier source sera compilé séparément.
+Si vous devez utiliser certaines fonctions provenant d'autres exercices,
+recopiez-les dans chaque fichier de rendu en les marquant par le
+mot-clef `static' (fonction locale).
+
+- Les sources doivent compiler avec `gcc -Wall' sans warning.
+
+----------------------
+ FONCTIONS AUTORISEES
+----------------------
+
+Aucune. Vous avez le droit à toutes les structures de contrôle du C
+autorisées par la norme, c'est tout.
+Vous n'avez donc pas le droit ni à la libc, *ni aux appels système*,
+sauf indication contraire donnée dans le sujet d'un exercice.
+
+Vous êtes bien sur libres d'utiliser my_putchar() et même write() pour
+vos tests, mais pas dans les fonctions que vous rendez, sauf indication
+contraire.
+
+Exercice 1
+----------
+Fichier : my_hexdump.c
+Prototype de la fonction :
+  void my_hexdump(void *data, unsigned int size);
+
+Vous devez émuler le comportement de `hexdump -C'.
+
+Fonctions autorisées dans cet exercice :
+  write(2)
+
+Exemple :
+
+  my_hexdump("0123456789ABCDEFfedcba9876543210blah blah\n", 42)
+
+00000000  30 31 32 33 34 35 36 37  38 39 41 42 43 44 45 46  |0123456789ABCDEF|
+00000010  66 65 64 63 62 61 39 38  37 36 35 34 33 32 31 30  |fedcba9876543210|
+00000020  62 6c 61 68 20 62 6c 61  68 0a                    |blah blah.|
+
+  my_hexdump("eéèaàç", 6)
+
+00000000  65 e9 e8 61 e0 e7                                 |e..a..|
+
+Note: contrairement à ce que spécifie la page du manuel pour hexdump, votre 
+rendu ne doit pas afficher le compte de caractères écrits sur la dernière
+ligne.
+
+Rappel: Un pointeur vers `void' n'est pas un tableau. Il faut le transformer
+(par une affectation par exemple) en pointeur vers un type entier pour
+travailler avec.
+
+Exercices 2a 2b ...
+------------------
+Fichiers : 
+  my_isalpha.c, 
+  my_isupper.c, 
+  my_islower.c,
+  my_isdigit.c,
+  my_isxdigit.c,
+  my_isalnum.c,
+  my_isspace.c,
+  my_ispunct.c,
+  my_isprint.c,
+  my_iscntrl.c,
+  my_isascii.c,
+  my_tolower.c,
+  my_toupper.c
+
+Prototypes des fonctions :
+  int my_isalpha(unsigned int c);
+  int my_isupper(unsigned int c);
+  /* etc. */
+  unsigned int my_toupper(unsigned int c);
+  unsigned int my_tolower(unsigned int c);
+
+Voir ctype(3) pour le comportement de ces fonctions.
+
+Ces fonctions doivent être prototypées dans le fichier my_ctype.h.
+
+On vous demande d'émuler le comportement de ces fonctions dans la locale
+C/POSIX. Un sujet complémentaire, étendu, sera proposé un autre jour.
+
+Note: l'exercice 2 est un sujet composé, donc nous compilerons tous ses
+fichiers ensembles. Ceci signifie notamment que pour l'exercice 2, et
+pour l'exercice 2 seulement, vous pouvez utiliser vos fonctions depuis
+les unes les autres sans les recopier à chaque fois.
+
+Exercice 3
+----------
+Fichier :
+  my_putword.c
+
+Prototype de la fonction :
+  void my_putword(int n);
+
+Fonctions autorisées :
+  write(2)
+
+Affiche un entier sous forme binaire, en affichant obligatoirement tous
+les bits de l'entier (y compris les zéros en tête, et/ou le bit de signe).
+
+Exemple:
+  my_putword(-1);
+affiche:
+  11111111111111111111111111111111 
+quand un entier mesure 4 octets.
+
+Cette fonction n'affiche pas de retour à la ligne final.
+
+Exercice 4
+----------
+Fichier : 
+  my_setbits.c
+
+Prototype de la fonction :
+  unsigned int my_setbits(unsigned int nb, int n, int p, unsigned int x);
+
+Change p bits à partir de la position n dans l'entier nb, en les remplaçant
+par le nombre correspondant de bits pris dans les premières positions de x.
+
+La fonction renvoie le résultat après modification.
+
+Exemple:
+  my_putword(my_setbits(0, 3, 4, 42))
+affiche:
+  00000000000000000000000001010000
+
+Autre exemple:
+  my_putword(0x38)
+affiche:
+  00000000000000000000000000111000
+
+  my_putword(my_setbits(-1, 5, 7, 0x38))
+affiche:
+  11111111111111111111011100011111
+
+On remarque bien que les bits proviennent des bits de poids faible de x.
+
+Attention, cette fonction n'affiche rien !
+
+

@@ -1,0 +1,87 @@
+Date de Rendu:            27/09/2002 a 15h42
+Repertoire de Rendu:      ~/c/rendu/piscine/sj1
+Droits:                   705 pour les répertoires, 
+                          604 pour le reste
+
+Consignes:		  Ne sont autorisees que les fonctions implementees par
+			  vos soins.
+
+			  Le but d'aujourd'hui est de privilegier le travail de 
+			  groupe, par consequent une note sera attribuee pour un
+			  groupe (la meme pour chaque membre). L'evaluation sera
+			  basee sur la comprehension et la capacite d'explication
+			  de chaque membre. Vous devez vous aider au sein du groupe.
+
+			  il ne s'agit pas d'une moyenne, on prendra
+			  en compte la plus mauvaise prestation. Si une personne ne
+			  sait pas expliquer, c'est 0 pour le groupe.
+
+			  Le groupe doit etre au complet pour la soutenance.
+			  Aucune soutenance avant 15h42.
+
+Exercice 1:
+__________
+
+Fichier      : roman.c
+
+Prototype    : void roman(char *res, unsigned int num);
+
+Rappels      : M = 1000   D = 500   C = 100   L = 50   X = 10   V = 5    I = 1
+
+ Vous etes limites au nombre 3999.
+
+ Ecrire une fonction permettant de traduire un entier (num)
+en un nombre romain (res).
+
+Exemple:
+ 
+$cat main.c
+int main(int argc, char *argv[])
+{
+   char	res[1024];
+
+   roman(res, 42);
+   my_putstr(res);
+   my_putchar('\n');
+   res[0] = '\0';
+   roman(res, 2002);
+   my_putstr(res);
+   my_putchar('\n');
+}   
+$cc main.c roman.c my_putstr.c my_putchar.c
+$a.out
+XLII
+MMII
+$	
+
+Rem: vous n'avez pas le droit a my_putchar.c et my_putstr.c dans
+roman.c, ils sont juste la pour illustrer l'usage de la fonction roman.
+
+Exercice 2:
+__________
+
+Fichier      :	get_day.c
+
+Prototype    :	unsigned int get_day(char *date);
+
+Interdiction :	Les fonctions annexes telles que ctime ou gettimeofday sont
+		STRICTEMENT interdites.
+
+  Ecrire une fonction qui donne le numero du jour de la semaine a
+partir d'une date.
+
+  Le format de la date est : "jj/mm/aaaa".
+  
+  Les dates vont du "01/01/1980" au "31/12/2020".
+
+  Les jours retournees vont de 0 a 6.
+
+Exemple: 
+	 get_day("27/09/2002"); /* returns 4 for Friday  */
+         get_day("04/09/2000"); /* returns 0 for Monday  */
+         get_day("01/01/1980"); /* returns 1 for Tuesday */
+
+Bon courage!
+Et vive les acus qui ne vont pas au seminaires.
+
+

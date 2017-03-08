@@ -1,0 +1,320 @@
+Date de Rendu:		04/10/2002 à 08:00 
+Groupe de News:         epita.cours.c-unix.mini-projs 
+Répertoire de Rendu:    ~/c/rendu/piscine/j8 
+Droits:                 701 pour ~
+			705 pour les autres répertoires 
+                        604 pour les fichiers de ~/c/rendu/piscine/j8
+			705 pour le fichier ~/c/rendu/piscine/j8/configure
+			(si vous en rendez un)
+Ne pas oublier:         Lire le sujet jusqu'au bout.
+			Coder à la norme.
+
+-------------------------------- 
+ IMPORTANT : MODALITES DE RENDU 
+-------------------------------- 
+
+- Les modalités d'écriture de votre Makefile sont précisées dans la
+  norme (notamment, vous avez droit à un configure)
+
+- Votre    projet    doit     générer    une    bibliothèque    nommée
+  libnode_`uname  -m`-`uname -s`.a  ainsi qu'un  fichier  nommé node.h
+  contenant le prototype des fonctions que vous aurez implémentées. La
+  bibliothèque   ne  doit   pas  utiliser   de  fonctions   externes.
+
+N'oubliez pas  que votre code doit compiler  sans avertissements quand
+on  utilise 'gcc -Wall'.
+
+Remarques
+---------
+
+- N'oubliez pas que ce soir les salles machines fermeront à minuit.
+
+- Soyez en forme pour l'examen demain à 10h.
+
+- Lisez attentivement la FAQ, de nombreux points du sujet y sont
+  détaillés !
+
+----------------------
+ FONCTIONS AUTORISEES 
+----------------------
+
+malloc(3) et free(3)
+
+-------------
+ N-ARY TREES
+-------------
+
+Name
+----
+
+N-ary Trees -- trees of data with any number of branches.
+
+Synopsis
+--------
+
+t_node		*my_node_new(void *data);
+t_node		*my_node_insert(t_node *parent, int position, t_node *node);
+t_node		*my_node_append(t_node *parent, t_node *node);
+t_node		*my_node_prepend(t_node *parent, t_node *node);
+t_node		*my_node_find(t_node *root, void *data);
+unsigned int	my_node_n_nodes(t_node *root);
+unsigned int	my_node_max_height(t_node *root);
+void		my_node_unlink(t_node *node);
+void		my_node_destroy(t_node *root);
+
+Description
+-----------
+
+The s_node  struct and its  associated functions provide a  N-ary tree
+data structure, where nodes in the tree can contain arbitrary data.
+
+To create a new tree use my_node_new().
+
+To insert  a node into  a tree use  my_node_insert(), my_node_append()
+and my_node_prepend().
+
+To  remove a  node  or subtree  from  a tree  use my_node_unlink()  or
+my_node_destroy().
+
+Details
+-------
+
+struct s_node
+{
+  void		*data;
+  struct s_node *next;
+  struct s_node *prev;
+  struct s_node *parent;
+  struct s_node *children;
+};
+typedef struct s_node t_node;
+
+The s_node struct represents one node in a N-ary Tree. The data field
+contains the actual  data of the node. The next  and prev fields point
+to  the node's  siblings  (a sibling  is  another node  with the  same
+parent). The parent field points to the parent of the node, or is NULL
+if the node is the root of  the tree. The children field points to the
+first child of the node. The  other children are accessed by using the
+next pointer of each child.
+
+----------------------------------------------------------------------
+
+	my_node_new()
+
+t_node		*my_node_new(void *data);
+
+Creates  a new node  containing the  given data.  Used to  create the
+first node in a tree.
+
+data : the data of the new node.
+
+Returns : a new node.
+
+----------------------------------------------------------------------
+
+	my_node_insert()
+
+t_node		*my_node_insert(t_node *parent, int position, t_node *node);
+
+Inserts a node beneath the parent at the given position.
+
+parent : the node to place node under.
+position  :  the  position to  place  node  at,  with respect  to  its
+siblings. If  position is -1,  node is inserted  as the last  child of
+parent.
+node : the node to insert.
+
+Returns : the inserted node.
+
+----------------------------------------------------------------------
+
+	my_node_append()
+
+t_node		*my_node_append(t_node *parent, t_node *node);
+
+Inserts a node as the last child of the given parent.
+
+parent : the node to place the new node under.
+node : the node to insert.
+
+Returns : the inserted node.
+
+----------------------------------------------------------------------
+
+	my_node_prepend()
+
+t_node		*my_node_prepend(t_node *parent, t_node *node);
+
+Inserts a node as the first child of the given parent.
+
+parent : the node to place the new node under.
+node : the node to insert.
+Returns : the inserted node.
+
+----------------------------------------------------------------------
+
+	my_node_find()
+
+t_node		*my_node_find(t_node *root, void *data);
+
+Finds a node in a tree.
+
+root : the root node of the tree to search.
+data : the data to find.
+
+Returns : the found node, or NULL if the data is not found.
+
+----------------------------------------------------------------------
+
+	my_node_n_nodes()
+
+unsigned int	my_node_n_nodes(t_node *root);
+
+Gets the number of nodes in a tree.
+
+root : a node.
+
+Returns : the number of nodes in the tree.
+
+----------------------------------------------------------------------
+
+	my_node_max_height()
+
+unsigned int	my_node_max_height(t_node *root);
+
+Gets the  maximum height of all  branches beneath a node.  This is the
+maximum distance from the node to all leaf nodes.
+
+If  root is  NULL,  0 is  returned.  If  root  has no  children, 1  is
+returned. If root has children, 2 is returned. And so on.
+
+root : a node.
+
+Returns : the maximum height of the tree beneath root.
+
+----------------------------------------------------------------------
+
+	my_node_unlink()
+
+void		my_node_unlink(t_node *node);
+
+Unlinks a node from a tree, resulting in two separate trees.
+
+node : the node to unlink, which becomes the root of a new tree.
+
+----------------------------------------------------------------------
+
+	my_node_destroy()
+
+void		my_node_destroy(t_node *root);
+
+Removes the  node and its children  from the tree,  freeing any memory
+allocated.
+
+root : the root of the tree/subtree to destroy.
+
+======================================================================
+
+FAQ
+
+1. Q La racine de l'arbre a-t-elle des frères ?
+
+   R Non.
+
+
+2. Q Dans les fonctions d'insertion, l'argument `node' a-t-il des
+     frères ?
+
+   R Non, il n'a ni frère, ni père.
+     C'est-à-dire :
+     node->parent == node->next == node->prev == NULL
+
+
+3. Q Est-ce que les fonctions my_node_n_nodes() et my_node_find()
+     explorent aussi les frères et les parents ?
+
+   R Non, vous devez explorer le noeud `root' et tous ses descendants
+     (tous les noeuds de la liste children et leurs descendants)
+
+
+4. Q Des noeuds frères ("siblings") ont-ils tous un pointeur vers le
+     même père ?
+
+   R Oui.
+
+
+5. Q Que faire si l'argument position dans la fonction
+     my_node_insert() est trop grand ?
+
+   R On ajoute le noeud à la fin de la liste (ce qui revient à faire
+     un my_node_append())
+
+
+6. Q Que faire si l'argument position dans la fonction
+     my_node_insert() est négatif ?
+
+   R idem
+
+
+7. Q L'argument position commence à 0 ou à 1 ?
+
+   R 0
+
+
+8. Q Dans les fonctions d'insertion, que faire si l'argument `parent'
+     est NULL ?
+
+   R On est dans le cas où l'on ajoute un élément à un arbre vide.
+     Votre fonction renvoie `node' sans le modifier.
+
+
+9. Q Dans les fonctions d'insertion, que faire si l'argument `node'
+     est NULL ?
+
+   R Votre fonction doit juste renvoyer NULL sans modifier `parent'.
+
+
+10. Q Dans la fonction my_node_destroy() l'argument `root' a-t-il des
+      frères ?
+
+    R Oui, c'est possible et dans ce cas il faut faire attention aux
+      pointeurs prev et next de ses frères.
+
+
+11. Q Que dois-je faire si malloc() renvoie NULL ?
+
+    R les fonctions sur arbres n'ont philosophiquement _pas_ le droit
+      de terminer le programme avec un appel à `exit'.
+
+      En fait, lorsqu'on code une bibliothèque de manipulation de
+      structures de données (listes, arbres, fichiers, autres), on
+      fournit au développeur des outils sur lesquels il souhaite le
+      maximum de pouvoir. En terminant le programme, on enlève au
+      développeur le droit d'avoir un comportement différent en cas
+      d'erreur (par exemple, afficher un message, exécuter du code
+      d'erreur, etc).
+
+
+12. Q Que se passe-t-il quand on appelle my_node_unlink() sur la
+      racine de l'arbre ?
+
+    R Rien.
+
+
+13. Q Quels sont les deux arbres résultants d'un unlink ?
+
+    R 'node' (et ses descendants), et l'arbre amputé.
+
+
+14. Q Est-ce que la fonction my_node_max_height() calcule la hauteur
+      à partir du noeud `root' ?
+
+    R Oui, il ne faut pas explorer son père ni ses frères.
+
+
+15. Q Que renvoie la fonction my_node_find() lorsqu'il y a des
+      doublons dans mon arbre ?
+
+    R Le premier que vous trouvez, de toutes facons on ne fera pas
+      de test avec des doublons.
+
